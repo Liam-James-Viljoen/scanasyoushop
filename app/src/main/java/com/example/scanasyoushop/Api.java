@@ -1,5 +1,7 @@
 package com.example.scanasyoushop;
 
+// REFRENCE ------------> https://www.simplifiedcoding.net/android-mysql-tutorial-to-perform-basic-crud-operation/
+
 public class Api {
     private static final String ROOT_URL = "http://192.168.0.34/scanasyoushop/v1/api.php?apicall=";
 

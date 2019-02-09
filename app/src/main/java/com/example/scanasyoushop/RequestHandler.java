@@ -1,3 +1,5 @@
+package com.example.scanasyoushop;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.InputStreamReader;
@@ -12,7 +14,7 @@ import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
 
-//https://www.simplifiedcoding.net/android-mysql-tutorial-to-perform-basic-crud-operation/
+// REFRENCE ------------> https://www.simplifiedcoding.net/android-mysql-tutorial-to-perform-basic-crud-operation/
 
 public class RequestHandler {
     //Method to send httpPostRequest
