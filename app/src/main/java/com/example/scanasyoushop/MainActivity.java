@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -26,10 +27,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
     public void mainMenuPageFunction(View view){ //If login is validated as succesfull
-        startActivity(new Intent(this, mainMenu.class)); //Creates instance of the page
+        startActivity(new Intent(this, MainMenu.class)); //Creates instance of the page
     }
     public void registerPageFunction(View view){ //If login is validated as succesfull
-        startActivity(new Intent(this, registerPage.class)); //Creates instance of the page
+        startActivity(new Intent(this, RegisterPage.class)); //Creates instance of the page
     }
 
     // REFRENCE ------------> https://www.simplifiedcoding.net/android-mysql-tutorial-to-perform-basic-crud-operation/
@@ -56,13 +57,9 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             try {
-                JSONObject object = new JSONObject(s);
+                JSONObject object = new JSONObject(s); //Seems to turn returned data into a JSON object
                 if (!object.getBoolean("error")) {
-                    //Toast.makeText(getApplicationContext(), object.getString("message"), Toast.LENGTH_SHORT).show();
-                    //so we get an updated list
-                    //we will create this method right now it is commented
-                    //because we haven't created it yet
-                    //refreshHeroList(object.getJSONArray("heroes"));
+                    Toast.makeText(getApplicationContext(), object.getString("message"), Toast.LENGTH_SHORT).show(); //Like a pop-up message
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
