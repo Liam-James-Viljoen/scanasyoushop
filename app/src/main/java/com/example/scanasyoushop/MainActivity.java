@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         */
         readUsers(usernameETTS);
         String usernameStr = user.optString("username");
-        println(usernameStr);
+        println("Hello");
         //startActivity(new Intent(this, MainMenu.class)); //Creates instance of the page
     }
 
@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
     public void readUsers(String username){ //Sends the request to PerformNetworkRequestClass
         HashMap<String, String> params = new HashMap<>();
         params.put("username", username);
-        PerformNetworkRequest request = new PerformNetworkRequest(Api.URL_SELECT_USER, params, CODE_GET_REQUEST);
+        PerformNetworkRequest request = new PerformNetworkRequest(Api.URL_SELECT_USER, params, CODE_POST_REQUEST);
         request.execute();
     }
 
