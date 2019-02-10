@@ -4,19 +4,25 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
 
+import static java.sql.DriverManager.println;
+
 public class MainActivity extends AppCompatActivity {
 
     //Defining views
     EditText usernameText, passwordText;
+
+    JSONObject user = new JSONObject();
 
     private static final int CODE_GET_REQUEST = 1024;
     private static final int CODE_POST_REQUEST = 1025;
@@ -26,11 +32,38 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
     }
-    public void mainMenuPageFunction(View view){ //If login is validated as succesfull
-        startActivity(new Intent(this, MainMenu.class)); //Creates instance of the page
+    public void mainMenuPageFunction(View view){ //Triggered on login button
+        usernameText = (EditText)findViewById(R.id.usernameText);
+        String usernameETTS = usernameText.getText().toString().trim();
+        passwordText = (EditText)findViewById(R.id.usernameText);
+        String passwordETTS = passwordText.getText().toString().trim();
+        /*
+        if (TextUtils.isEmpty(usernameETTS)){
+            usernameText.setError("Please enter username");
+            usernameText.requestFocus();
+            return;
+        }
+        if (TextUtils.isEmpty(passwordETTS)){
+            passwordText.setError("Please enter password");
+            passwordText.requestFocus();
+            return;
+        }
+        */
+        readUsers(usernameETTS);
+        String usernameStr = user.optString("username");
+        println(usernameStr);
+        //startActivity(new Intent(this, MainMenu.class)); //Creates instance of the page
     }
-    public void registerPageFunction(View view){ //If login is validated as succesfull
-        startActivity(new Intent(this, RegisterPage.class)); //Creates instance of the page
+
+    public void registerPageFunction(View view){
+        //startActivity(new Intent(this, RegisterPage.class)); //Creates instance of the page
+    }
+
+    public void readUsers(String username){ //Sends the request to PerformNetworkRequestClass
+        HashMap<String, String> params = new HashMap<>();
+        params.put("username", username);
+        PerformNetworkRequest request = new PerformNetworkRequest(Api.URL_SELECT_USER, params, CODE_GET_REQUEST);
+        request.execute();
     }
 
     // REFRENCE ------------> https://www.simplifiedcoding.net/android-mysql-tutorial-to-perform-basic-crud-operation/
@@ -60,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
                 JSONObject object = new JSONObject(s); //Seems to turn returned data into a JSON object
                 if (!object.getBoolean("error")) {
                     Toast.makeText(getApplicationContext(), object.getString("message"), Toast.LENGTH_SHORT).show(); //Like a pop-up message
+                    user = object.getJSONObject("user");
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
