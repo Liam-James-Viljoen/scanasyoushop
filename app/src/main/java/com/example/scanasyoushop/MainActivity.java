@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
     //Defining views
     EditText usernameText, passwordText;
 
-    JSONObject user = new JSONObject();
+    JSONArray user = new JSONArray();
 
     private static final int CODE_GET_REQUEST = 1024;
     private static final int CODE_POST_REQUEST = 1025;
@@ -49,9 +49,16 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
         */
+        for (int i=0; i<user.length(); i++){  // Untested ***************************************************************************************
+            try {
+                JSONObject userDetails = user.getJSONObject(i);
+                String usernameStr = userDetails.optString("username");
+                println(usernameStr);
+            } catch (JSONException e){
+                e.printStackTrace();
+            }
+        }
         readUsers(usernameETTS);
-        String usernameStr = user.optString("username");
-        println("Hello");
         //startActivity(new Intent(this, MainMenu.class)); //Creates instance of the page
     }
 
@@ -93,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
                 JSONObject object = new JSONObject(s); //Seems to turn returned data into a JSON object
                 if (!object.getBoolean("error")) {
                     Toast.makeText(getApplicationContext(), object.getString("message"), Toast.LENGTH_SHORT).show(); //Like a pop-up message
-                    user = object.getJSONObject("user");
+                    user = object.getJSONArray("user");
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
