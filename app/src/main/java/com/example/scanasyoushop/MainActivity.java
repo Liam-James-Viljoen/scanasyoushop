@@ -37,7 +37,8 @@ public class MainActivity extends AppCompatActivity {
     public void mainMenuPageFunction(View view) throws JSONException { //Triggered on login button
         usernameText = (EditText)findViewById(R.id.usernameText);
         String usernameStr = usernameText.getText().toString().trim();
-        passwordText = (EditText)findViewById(R.id.usernameText);
+
+        passwordText = (EditText)findViewById(R.id.passwordText);
         String passwordStr = passwordText.getText().toString().trim();
 
         /*
@@ -61,7 +62,6 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
         */
-
         readUsers(usernameStr, passwordStr);
     }
     public void registerPageFunction(View view){
@@ -92,7 +92,8 @@ public class MainActivity extends AppCompatActivity {
         int requestCode;
 
         //User entered username and password
-        String userentrUsername, userentrPassword;
+        String userentrUsername;
+        String userentrPassword;
 
         //constructor to initialize values
         PerformNetworkRequest(String url, HashMap<String, String> params, int requestCode, String userentrUsername, String userentrPassword) {
@@ -118,8 +119,8 @@ public class MainActivity extends AppCompatActivity {
                     lclUsername = user.getJSONObject(0).get("username").toString(); // Assigns username from JSON object to string
                     lclPassword = user.getJSONObject(0).get("password").toString(); // Assigns password from JSON object to string
 
-                    Log.i("Variable Contents", userentrPassword);
-                    if (lclPassword.equals(userentrPassword)){ //Checks to see if password equals inputed password
+                    //Log.i("Variable Contents 2", userentrPassword);
+                    if (userentrPassword.equals(lclPassword)){ //Checks to see if password equals inputed password
                         startMenuFunction(); //Call to function that opens next page
                     }
 
