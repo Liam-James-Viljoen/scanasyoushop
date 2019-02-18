@@ -3,6 +3,7 @@ package com.example.scanasyoushop;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -60,16 +61,54 @@ public class RegisterPage extends AppCompatActivity {
         r_phoneText = (EditText)findViewById(R.id.r_phoneText);
         String phoneTextStr = r_phoneText.getText().toString().trim();
 
-        if (r_passwordText.equals(r_passwordReEnterText)){
-
-        }else {
+        if(checkContentsFunction(usernameStr, passwordStr, passwordReEnterStr, emailTextStr, phoneTextStr, r_usernameText, r_passwordText, r_passwordReEnterText, r_emailText, r_phoneText)){
             return;
         }
+
 
         String salt = generateSalt(512).toString(); //Call to generate the string
         String protectedPassword = hashPassword(passwordStr, salt).toString(); //Generates the hash using the salt
 
         registerUser(usernameStr, protectedPassword, salt ,emailTextStr, phoneTextStr); //Sends the data to be packaged into a hash map
+    }
+
+    public boolean checkContentsFunction(String usernameStr, String passwordStr, String passwordReEnterStr, String emailTextStr, String phoneTextStr,
+                                         EditText r_usernameText, EditText r_passwordText, EditText r_passwordReEnterText, EditText r_emailText, EditText r_phoneText){
+        boolean flag = false;
+        if (TextUtils.isEmpty(usernameStr)){
+            r_usernameText.setError("Please enter username");
+            r_usernameText.requestFocus();
+            flag = true;
+        }
+        if (TextUtils.isEmpty(passwordStr)){
+            r_passwordText.setError("Please enter password");
+            r_passwordText.requestFocus();
+            flag = true;
+        }
+        if (TextUtils.isEmpty(passwordReEnterStr)){
+            r_passwordReEnterText.setError("Please enter password");
+            r_passwordReEnterText.requestFocus();
+            flag = true;
+        }
+        if (TextUtils.isEmpty(emailTextStr)){
+            r_emailText.setError("Please enter password");
+            r_emailText.requestFocus();
+            flag = true;
+        }
+        if (TextUtils.isEmpty(phoneTextStr)){
+            r_phoneText.setError("Please enter password");
+            r_phoneText.requestFocus();
+            flag = true;
+        }
+        if (r_passwordText.equals(r_passwordReEnterText)){
+
+        }else {
+            r_passwordReEnterText.setError("Password does not match");
+            r_passwordReEnterText.requestFocus();
+            flag = true;
+        }
+
+        return flag;
     }
 
     public void registerUser(String username, String password, String email, String phonenumber, String salt){ //Sends the request to PerformNetworkRequestClass
@@ -111,7 +150,7 @@ public class RegisterPage extends AppCompatActivity {
         try {
             SecretKeyFactory fac = SecretKeyFactory.getInstance(ALGORITHM);
             byte[] securePassword = fac.generateSecret(spec).getEncoded();
-            return Optional.of(Base64.getEncoder().encodeToString(securePassword));
+            return Optional.of(Base64.getEncoder().encodeToString(securePassword)); //Returns hashed password in base64
 
         } catch (NoSuchAlgorithmException | InvalidKeySpecException ex) {
             System.err.println("Exception encountered in hashPassword()");
