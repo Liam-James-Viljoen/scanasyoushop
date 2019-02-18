@@ -100,7 +100,7 @@ public class RegisterPage extends AppCompatActivity {
             r_phoneText.requestFocus();
             flag = true;
         }
-        if (r_passwordText.equals(r_passwordReEnterText)){
+        if (passwordStr.equals(passwordReEnterStr)){
 
         }else {
             r_passwordReEnterText.setError("Password does not match");
@@ -115,9 +115,9 @@ public class RegisterPage extends AppCompatActivity {
         HashMap<String, String> params = new HashMap<>();
         params.put("username", username);
         params.put("password", password);
-        params.put("salt", salt);
         params.put("email", email);
         params.put("phonenumber", phonenumber);
+        params.put("salt", salt);
 
         RegisterPage.PerformNetworkRequest request = new RegisterPage.PerformNetworkRequest(Api.URL_SELECT_USER, params, CODE_POST_REQUEST);
         request.execute();
