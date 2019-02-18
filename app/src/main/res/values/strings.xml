@@ -3,13 +3,25 @@
     <string name="app_name">Scan as you shop</string>
 
     <!--Component names-->
+    <!--Buttons-->
     <string name="Loginbutton">Login</string>
     <string name="Registerbutton">Register</string>
+
+    <string name="r_registerbutton">Register</string>
+
+    <!--Text-->
     <string name="usernameText">Username</string>
     <string name="passwordText">Password</string>
+
+    <string name="r_usernameText">Username</string>
+    <string name="r_passwordText">Password</string>
+    <string name="r_passwordReEnterText">Re-Type Password</string>
+    <string name="r_emailText">Email</string>
+    <string name="r_phoneText">Mobile Phone number</string>
 
     <!--Page names-->
     <string name="Main_Menu">Main Menu</string>
     <string name="Login">Login</string>
     <string name="Register">Register</string>
+
 </resources>

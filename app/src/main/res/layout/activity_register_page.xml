@@ -4,4 +4,87 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RegisterPage"/>
+    tools:context=".RegisterPage">
+
+    <EditText
+        android:id="@+id/r_usernameText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="120dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:ems="10"
+        android:hint="@string/r_usernameText"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/r_passwordText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:hint="@string/r_passwordText"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="@+id/r_usernameText"
+        app:layout_constraintStart_toStartOf="@+id/r_usernameText"
+        app:layout_constraintTop_toBottomOf="@+id/r_usernameText" />
+
+    <EditText
+        android:id="@+id/r_passwordReEnterText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:hint="@string/r_passwordReEnterText"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="@+id/r_passwordText"
+        app:layout_constraintStart_toStartOf="@+id/r_passwordText"
+        app:layout_constraintTop_toBottomOf="@+id/r_passwordText" />
+
+    <EditText
+        android:id="@+id/r_emailText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:hint="@string/r_emailText"
+        android:inputType="none|textEmailAddress"
+        app:layout_constraintEnd_toEndOf="@+id/r_passwordReEnterText"
+        app:layout_constraintStart_toStartOf="@+id/r_passwordReEnterText"
+        app:layout_constraintTop_toBottomOf="@+id/r_passwordReEnterText" />
+
+    <EditText
+        android:id="@+id/r_phoneText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:hint="@string/r_phoneText"
+        android:inputType="phone"
+        app:layout_constraintEnd_toEndOf="@+id/r_emailText"
+        app:layout_constraintStart_toStartOf="@+id/r_emailText"
+        app:layout_constraintTop_toBottomOf="@+id/r_emailText" />
+
+    <Button
+        android:id="@+id/registerbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="90dp"
+        android:onClick="mainRegisterUserFunction"
+        android:text="Button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/r_phoneText"
+        tools:text="@string/r_registerbutton" />
+</android.support.constraint.ConstraintLayout>

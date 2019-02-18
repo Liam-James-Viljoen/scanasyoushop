@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -41,8 +42,8 @@ public class MainActivity extends AppCompatActivity {
         passwordText = (EditText)findViewById(R.id.passwordText);
         String passwordStr = passwordText.getText().toString().trim();
 
-        /*
-        Android studio doesn't like me using this for some unknown reason
+
+        //Android studio doesn't like me using this for some unknown reason
 
         if (TextUtils.isEmpty(usernameStr) && TextUtils.isEmpty(passwordStr)){
             usernameText.setError("Please enter username");
@@ -61,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
             passwordText.requestFocus();
             return;
         }
-        */
+
         readUsers(usernameStr, passwordStr);
     }
     public void registerPageFunction(View view){
