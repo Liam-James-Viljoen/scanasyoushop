@@ -10,7 +10,17 @@ import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.security.SecureRandom;
 import java.util.HashMap;
+
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+import java.util.Arrays;
+import java.util.Optional;
+import java.util.Base64;
+
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
 
 public class RegisterPage extends AppCompatActivity {
 
@@ -18,8 +28,15 @@ public class RegisterPage extends AppCompatActivity {
     private static final int CODE_GET_REQUEST = 1024;
     private static final int CODE_POST_REQUEST = 1025;
 
+    private static final int ITERATIONS = 65536;
+    private static final int KEY_LENGTH = 512;
+    private static final String ALGORITHM = "PBKDF2WithHmacSHA512";
+
     //Defining views
     EditText r_usernameText, r_passwordText, r_passwordReEnterText, r_emailText, r_phoneText;
+
+    //
+    private static final SecureRandom RAND = new SecureRandom();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,18 +60,66 @@ public class RegisterPage extends AppCompatActivity {
         r_phoneText = (EditText)findViewById(R.id.r_phoneText);
         String phoneTextStr = r_phoneText.getText().toString().trim();
 
+        if (r_passwordText.equals(r_passwordReEnterText)){
 
+        }else {
+            return;
+        }
+
+        String salt = generateSalt(512).toString(); //Call to generate the string
+        String protectedPassword = hashPassword(passwordStr, salt).toString(); //Generates the hash using the salt
+
+        registerUser(usernameStr, protectedPassword, salt ,emailTextStr, phoneTextStr); //Sends the data to be packaged into a hash map
     }
 
-    public void registerUser(String username, String password, String email, String phonenumber){ //Sends the request to PerformNetworkRequestClass
+    public void registerUser(String username, String password, String email, String phonenumber, String salt){ //Sends the request to PerformNetworkRequestClass
         HashMap<String, String> params = new HashMap<>();
         params.put("username", username);
         params.put("password", password);
+        params.put("salt", salt);
         params.put("email", email);
         params.put("phonenumber", phonenumber);
 
         RegisterPage.PerformNetworkRequest request = new RegisterPage.PerformNetworkRequest(Api.URL_SELECT_USER, params, CODE_POST_REQUEST);
         request.execute();
+    }
+
+    //Refrence - https://dev.to/awwsmm/how-to-encrypt-a-password-in-java-42dh
+    public static Optional<String> generateSalt (final int length) {
+
+        if (length < 1) { //Checks lenght is less than 1
+            System.err.println("error in generateSalt: length must be > 0");
+            return Optional.empty();
+        }
+
+        byte[] salt = new byte[length];
+        RAND.nextBytes(salt); //Generates salt
+
+        return Optional.of(Base64.getEncoder().encodeToString(salt)); //Returns salt in base64
+    }
+
+    //Refrence - https://dev.to/awwsmm/how-to-encrypt-a-password-in-java-42dh
+    public static Optional<String> hashPassword (String password, String salt) {
+
+        char[] chars = password.toCharArray(); //Turns password to character array for security purposes (less paper trail)
+        byte[] bytes = salt.getBytes();
+
+        PBEKeySpec spec = new PBEKeySpec(chars, bytes, ITERATIONS, KEY_LENGTH);
+
+        Arrays.fill(chars, Character.MIN_VALUE);
+
+        try {
+            SecretKeyFactory fac = SecretKeyFactory.getInstance(ALGORITHM);
+            byte[] securePassword = fac.generateSecret(spec).getEncoded();
+            return Optional.of(Base64.getEncoder().encodeToString(securePassword));
+
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException ex) {
+            System.err.println("Exception encountered in hashPassword()");
+            return Optional.empty();
+
+        } finally {
+            spec.clearPassword();
+        }
     }
 
     // REFRENCE ------------> https://www.simplifiedcoding.net/android-mysql-tutorial-to-perform-basic-crud-operation/
