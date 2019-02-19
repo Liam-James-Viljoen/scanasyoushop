@@ -67,7 +67,7 @@ public class RegisterPage extends AppCompatActivity {
         }
 
 
-        String salt = generateSalt(400).get(); //Call to generate the string
+        String salt = generateSalt(200).get(); //Call to generate the string
 
         String protectedPassword = hashPassword(passwordStr, salt).get(); //Generates the hash using the salt
         Log.i("Variable Contents 1", salt);
