@@ -110,7 +110,9 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             try {
+                Log.i("Variable Contents:", s);
                 JSONObject object = new JSONObject(s); //Seems to turn returned data into a JSON object
+
                 if (!object.getBoolean("error")) {
                     Toast.makeText(getApplicationContext(), object.getString("message"), Toast.LENGTH_SHORT).show(); //pop-up message
                     user = object.getJSONArray("user");

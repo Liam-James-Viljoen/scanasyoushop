@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -67,6 +68,7 @@ public class RegisterPage extends AppCompatActivity {
 
 
         String salt = generateSalt(512).toString(); //Call to generate the string
+
         String protectedPassword = hashPassword(passwordStr, salt).toString(); //Generates the hash using the salt
 
         registerUser(usernameStr, protectedPassword, salt ,emailTextStr, phoneTextStr); //Sends the data to be packaged into a hash map
@@ -119,7 +121,7 @@ public class RegisterPage extends AppCompatActivity {
         params.put("phonenumber", phonenumber);
         params.put("salt", salt);
 
-        RegisterPage.PerformNetworkRequest request = new RegisterPage.PerformNetworkRequest(Api.URL_SELECT_USER, params, CODE_POST_REQUEST);
+        RegisterPage.PerformNetworkRequest request = new RegisterPage.PerformNetworkRequest(Api.URL_CREATE_USER, params, CODE_POST_REQUEST);
         request.execute();
     }
 
