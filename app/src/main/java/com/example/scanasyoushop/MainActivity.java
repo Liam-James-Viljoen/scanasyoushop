@@ -122,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
                     lclUsername = user.getJSONObject(0).get("username").toString(); // Assigns username from JSON object to string
                     lclPassword = user.getJSONObject(0).get("password").toString(); // Assigns password from JSON object to string
 
-                    //Log.i("Variable Contents 2", userentrPassword);
+                    //Log.i("Variable Contents 2", );
                     if (userentrPassword.equals(lclPassword)){ //Checks to see if password equals inputed password
                         startMenuFunction(); //Call to function that opens next page
                     }

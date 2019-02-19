@@ -67,11 +67,13 @@ public class RegisterPage extends AppCompatActivity {
         }
 
 
-        String salt = generateSalt(512).toString(); //Call to generate the string
+        String salt = generateSalt(400).get(); //Call to generate the string
 
-        String protectedPassword = hashPassword(passwordStr, salt).toString(); //Generates the hash using the salt
+        String protectedPassword = hashPassword(passwordStr, salt).get(); //Generates the hash using the salt
+        Log.i("Variable Contents 1", salt);
+        Log.i("Variable Contents 2", protectedPassword);
 
-        registerUser(usernameStr, protectedPassword, salt ,emailTextStr, phoneTextStr); //Sends the data to be packaged into a hash map
+        registerUser(usernameStr, protectedPassword, emailTextStr, phoneTextStr, salt); //Sends the data to be packaged into a hash map
     }
 
     public boolean checkContentsFunction(String usernameStr, String passwordStr, String passwordReEnterStr, String emailTextStr, String phoneTextStr,
@@ -120,6 +122,8 @@ public class RegisterPage extends AppCompatActivity {
         params.put("email", email);
         params.put("phonenumber", phonenumber);
         params.put("salt", salt);
+
+        Log.i("Variable Contents 3", params.toString());
 
         RegisterPage.PerformNetworkRequest request = new RegisterPage.PerformNetworkRequest(Api.URL_CREATE_USER, params, CODE_POST_REQUEST);
         request.execute();
