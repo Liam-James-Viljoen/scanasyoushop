@@ -14,7 +14,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+import java.util.Arrays;
+import java.util.Base64;
 import java.util.HashMap;
+import java.util.Optional;
+
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -22,12 +30,16 @@ public class MainActivity extends AppCompatActivity {
     //Defining views
     EditText usernameText, passwordText;
 
-    //
+    //Stores user details
     JSONArray user = new JSONArray();
 
     //integer codes for GET and POST requests
     private static final int CODE_GET_REQUEST = 1024;
     private static final int CODE_POST_REQUEST = 1025;
+
+    private static final int ITERATIONS = 65536;
+    private static final int KEY_LENGTH = 512;
+    private static final String ALGORITHM = "PBKDF2WithHmacSHA512";
 
 
     @Override
@@ -117,13 +129,13 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), object.getString("message"), Toast.LENGTH_SHORT).show(); //pop-up message
                     user = object.getJSONArray("user");
 
-                    String lclUsername;
+                    /*
                     String lclPassword;
-                    lclUsername = user.getJSONObject(0).get("username").toString(); // Assigns username from JSON object to string
                     lclPassword = user.getJSONObject(0).get("password").toString(); // Assigns password from JSON object to string
+                    */
 
                     //Log.i("Variable Contents 2", );
-                    if (userentrPassword.equals(lclPassword)){ //Checks to see if password equals inputed password
+                    if (verifyPassword(userentrPassword, user.getJSONObject(0).get("password").toString(), user.getJSONObject(0).get("salt").toString())){ //Checks to see if password equals inputed password
                         startMenuFunction(); //Call to function that opens next page
                     }
 
@@ -146,6 +158,36 @@ public class MainActivity extends AppCompatActivity {
                 return requestHandler.sendGetRequest(url);
 
             return null;
+        }
+
+        //Refrence - https://dev.to/awwsmm/how-to-encrypt-a-password-in-java-42dh
+        public boolean verifyPassword (String password, String key, String salt) {
+            Optional<String> optEncrypted = hashPassword(password, salt);
+            if (!optEncrypted.isPresent()) return false;
+            return optEncrypted.get().equals(key);
+        }
+        //Refrence - https://dev.to/awwsmm/how-to-encrypt-a-password-in-java-42dh
+        private Optional<String> hashPassword (String password, String salt) {
+
+            char[] chars = password.toCharArray(); //Turns password to character array for security purposes (less paper trail)
+            byte[] bytes = salt.getBytes();
+
+            PBEKeySpec spec = new PBEKeySpec(chars, bytes, ITERATIONS, KEY_LENGTH);
+
+            Arrays.fill(chars, Character.MIN_VALUE);
+
+            try {
+                SecretKeyFactory fac = SecretKeyFactory.getInstance(ALGORITHM);
+                byte[] securePassword = fac.generateSecret(spec).getEncoded();
+                return Optional.of(Base64.getEncoder().encodeToString(securePassword)); //Returns hashed password in base64
+
+            } catch (NoSuchAlgorithmException | InvalidKeySpecException ex) {
+                System.err.println("Exception encountered in hashPassword()");
+                return Optional.empty();
+
+            } finally {
+                spec.clearPassword();
+            }
         }
     }
 }
