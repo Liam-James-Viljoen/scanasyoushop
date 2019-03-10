@@ -9,6 +9,8 @@
 
     <string name="r_registerbutton">Register</string>
 
+    <string name="am_scanitembutton">Scan items</string>
+
     <!--Text-->
     <string name="usernameText">Username</string>
     <string name="passwordText">Password</string>
