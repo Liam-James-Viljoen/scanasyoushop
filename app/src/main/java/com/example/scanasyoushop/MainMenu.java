@@ -3,8 +3,6 @@ package com.example.scanasyoushop;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,6 +16,10 @@ import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
+
+import java.io.IOException;
+
+
 
 import java.io.IOException;
 
@@ -38,9 +40,10 @@ public class MainMenu extends AppCompatActivity {
     }
 
     public void startScanning(View view) {
-        cameraView = (SurfaceView) findViewById(R.id.cameraView);
+        cameraView = (SurfaceView) findViewById(R.id.camera_view);
+        barcodeInfo = (TextView) findViewById(R.id.txtContent);
 
-        BarcodeDetector detector = new BarcodeDetector.Builder(this).setBarcodeFormats(Barcode.DATA_MATRIX | Barcode.QR_CODE).build();
+        BarcodeDetector detector = new BarcodeDetector.Builder(this).setBarcodeFormats(Barcode.CODE_128 | Barcode.QR_CODE).build();
         cameraSource = new CameraSource.Builder(this, detector).setRequestedPreviewSize(640, 480).build();
 
         if (!detector.isOperational()) {
