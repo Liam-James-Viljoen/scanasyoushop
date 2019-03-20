@@ -20,4 +20,11 @@ public class MainMenu extends AppCompatActivity {
         IntentIntegrator intentIntegrator = new IntentIntegrator(this); // where this is activity
         intentIntegrator.initiateScan(IntentIntegrator.ALL_CODE_TYPES); // or QR_CODE_TYPES if you need to scan QR
     }
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
+        if (scanResult != null) {
+            Log.i("Variable Contents:", scanResult.toString());
+        }
+        // else continue with any other code you need in the method
+    }
 }
