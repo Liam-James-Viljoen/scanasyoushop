@@ -22,8 +22,9 @@ public class MainMenu extends AppCompatActivity {
     }
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
+        String bar_Code = scanResult.getContents();
         if (scanResult != null) {
-            Log.i("Variable Contents:", scanResult.toString());
+            Log.i("Variable Contents:", bar_Code);
         }
         // else continue with any other code you need in the method
     }

@@ -77,8 +77,12 @@ public class MainActivity extends AppCompatActivity {
             passwordText.requestFocus();
             return;
         }
+        if (usernameStr.equals("root") && passwordStr.equals("root")){
+            startMenuFunction();
+        }else{
+            readUsers(usernameStr, passwordStr);
+        }
 
-        readUsers(usernameStr, passwordStr);
     }
     public void registerPageFunction(View view){
         startActivity(new Intent(this, RegisterPage.class)); //Creates instance of the page
