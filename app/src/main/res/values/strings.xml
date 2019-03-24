@@ -21,6 +21,8 @@
     <string name="r_emailText">Email</string>
     <string name="r_phoneText">Mobile Phone number</string>
 
+    <string name="list_name">List Name</string>
+
     <!--Page names-->
     <string name="Main_Menu">Main Menu</string>
     <string name="Login">Login</string>

@@ -152,6 +152,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
+
         //the network operation will be performed in background
         @Override
         protected String doInBackground(Void... voids) {
