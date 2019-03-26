@@ -58,12 +58,4 @@ public class MainMenu extends AppCompatActivity {
         startActivity(new Intent(this, Scan_To_List.class).putExtra("list_name", list_name));
 
     }
-    //test
-    public JSONObject encaseJson(JSONArray info) throws JSONException {
-        JSONObject encasement = new JSONObject();
-        encasement.put("List name", "test");
-        encasement.put("List", info);
-        Log.i("Variable Contents 1", encasement.toString());
-        return encasement;
-    }
 }

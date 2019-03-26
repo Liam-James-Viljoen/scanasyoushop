@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -19,6 +20,10 @@ public class Scan_To_List extends AppCompatActivity {
     //integer codes for GET and POST requests
     private static final int CODE_GET_REQUEST = 1024;
     private static final int CODE_POST_REQUEST = 1025;
+
+    //
+    JSONObject list_JSON_obj = new JSONObject();
+    JSONArray list_items_JSON_array = new JSONArray();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +53,14 @@ public class Scan_To_List extends AppCompatActivity {
         // else continue with any other code you need in the method
     }
 
+    public void add_item(JSONArray returnedInfo) throws JSONException {
+        JSONObject item = new JSONObject();
+        String item_name = returnedInfo.getJSONObject(0).get("item_name").toString();
+        String price = returnedInfo.getJSONObject(0).get("price").toString();
+        item.put("item_name", item_name);
+        item.put("price", price);
+        list_items_JSON_array.put(item);
+    }
 
     // REFRENCE ------------> https://www.simplifiedcoding.net/android-mysql-tutorial-to-perform-basic-crud-operation/
     //Inner class to perform network requests
