@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -13,6 +15,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Scan_To_List extends AppCompatActivity {
@@ -64,9 +67,25 @@ public class Scan_To_List extends AppCompatActivity {
         item.put("price", price);
 
         list_items_JSON_array.put(item);
+        refresh_list();
         Log.i("Variable Contents:", list_items_JSON_array.toString());
     }
 
+    public void refresh_list(){
+        ArrayList<JSONObject> item = new ArrayList<JSONObject>();
+        try {
+            if (list_items_JSON_array != null){
+                for (int i=0; i<list_items_JSON_array.length(); i++){
+                    item.add(list_items_JSON_array.getJSONObject(i));
+                }
+            }
+        } catch (JSONException e){
+            e.printStackTrace();
+        }
+        ListView list_of_items = (ListView)findViewById(R.id.list_of_items);
+        CustomListAdapter_stl customListAdapter_stl = new CustomListAdapter_stl(this, R.layout.listview_row_stl, item);
+        list_of_items.setAdapter(customListAdapter_stl);
+    }
     public void readItems(String bar_Code){ //Sends the request to PerformNetworkRequestClass
         HashMap<String, String> params = new HashMap<>();
         params.put("bar_code", bar_Code);
