@@ -23,9 +23,22 @@
 
     <string name="list_name">List Name</string>
 
+    <string name="b_scan_item">Scan Item</string>
+    <string name="b_checkout">Checkout</string>
+    <string name="b_store_checkout">Store Checkout</string>
+    <string name="b_start_list_with_name">Start Named List</string>
+    <string name="b_start_unnamed_list">Start Un-named List</string>
+
+    <string name="tV_total_label">Total: </string>
+    <string name="tv_total_sum">£000.00</string>
+    <string name="tV_list_name">Loren Ipsum</string>
+
+    <string name="tV_list_of_lists">Your Shopping Lists</string>
+
     <!--Page names-->
     <string name="Main_Menu">Main Menu</string>
     <string name="Login">Login</string>
     <string name="Register">Register</string>
+    <string name="title_activity_scan__to__list">Scan_To_List</string>
 
 </resources>

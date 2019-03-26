@@ -8,5 +8,6 @@ public class Api {
 
     public static final String URL_CREATE_USER = ROOT_URL + "createuser";
     public static final String URL_SELECT_USER = ROOT_URL + "selectuser";
+    public static final String URL_SELECT_ITEM = ROOT_URL + "selectitem";
 
 }

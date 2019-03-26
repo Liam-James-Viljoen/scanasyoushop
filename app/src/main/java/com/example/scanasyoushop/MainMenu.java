@@ -25,18 +25,6 @@ public class MainMenu extends AppCompatActivity {
         setContentView(R.layout.activity_main_menu);
     }
 
-    public void scanbarcode (View view){
-        IntentIntegrator intentIntegrator = new IntentIntegrator(this); // where this is activity
-        intentIntegrator.initiateScan(IntentIntegrator.ALL_CODE_TYPES); // or QR_CODE_TYPES if you need to scan QR
-    }
-    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
-        String bar_Code = scanResult.getContents();
-        if (scanResult != null) {
-            Log.i("Variable Contents:", bar_Code);
-        }
-        // else continue with any other code you need in the method
-    }
     public void dialogBoxActivated(View view){
         AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
         builder.setTitle("Set List Name");
@@ -52,7 +40,8 @@ public class MainMenu extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
-                String m_Text = input.getText().toString();
+                String list_name = input.getText().toString();
+                openPage(list_name);
             }
         });
         builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
@@ -63,6 +52,11 @@ public class MainMenu extends AppCompatActivity {
         });
 
         builder.show();
+    }
+    //Opens page
+    public void openPage(String list_name){
+        startActivity(new Intent(this, Scan_To_List.class).putExtra("list_name", list_name));
+
     }
     //test
     public JSONObject encaseJson(JSONArray info) throws JSONException {
