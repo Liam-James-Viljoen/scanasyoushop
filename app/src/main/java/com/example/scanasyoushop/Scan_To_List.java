@@ -40,8 +40,9 @@ public class Scan_To_List extends AppCompatActivity {
     }
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
-        String bar_Code = scanResult.getContents();
+
         if (scanResult != null) {
+            String bar_Code = scanResult.getContents();
             Log.i("Variable Contents:", bar_Code);
         }
         // else continue with any other code you need in the method
