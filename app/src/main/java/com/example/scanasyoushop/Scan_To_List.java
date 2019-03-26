@@ -48,7 +48,10 @@ public class Scan_To_List extends AppCompatActivity {
 
         if (scanResult != null) {
             String bar_Code = scanResult.getContents();
+            bar_Code.replaceAll("[^\\d]", "" );
             Log.i("Variable Contents:", bar_Code);
+            readItems(bar_Code);
+
         }
         // else continue with any other code you need in the method
     }
@@ -59,7 +62,16 @@ public class Scan_To_List extends AppCompatActivity {
         String price = returnedInfo.getJSONObject(0).get("price").toString();
         item.put("item_name", item_name);
         item.put("price", price);
+
         list_items_JSON_array.put(item);
+        Log.i("Variable Contents:", list_items_JSON_array.toString());
+    }
+
+    public void readItems(String bar_Code){ //Sends the request to PerformNetworkRequestClass
+        HashMap<String, String> params = new HashMap<>();
+        params.put("bar_code", bar_Code);
+        PerformNetworkRequest request = new PerformNetworkRequest(Api.URL_SELECT_ITEM, params, CODE_POST_REQUEST);
+        request.execute();
     }
 
     // REFRENCE ------------> https://www.simplifiedcoding.net/android-mysql-tutorial-to-perform-basic-crud-operation/
@@ -74,10 +86,6 @@ public class Scan_To_List extends AppCompatActivity {
         //the request code to define whether it is a GET or POST
         int requestCode;
 
-        //User entered username and password
-        String userentrUsername;
-        String userentrPassword;
-
         //constructor to initialize values
         PerformNetworkRequest(String url, HashMap<String, String> params, int requestCode) {
             this.url = url;
@@ -90,11 +98,12 @@ public class Scan_To_List extends AppCompatActivity {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             try {
-                JSONObject object = new JSONObject(s); //Seems to turn returned data into a JSON object
+                JSONObject object = new JSONObject(s);
 
                 if (!object.getBoolean("error")) {
                     Toast.makeText(getApplicationContext(), object.getString("message"), Toast.LENGTH_SHORT).show(); //pop-up message
-                    //user = object.getJSONArray("user");
+                    Log.i("Variable Contents:", object.getJSONArray("item").toString());
+                    add_item(object.getJSONArray("item"));
 
                 }
             } catch (JSONException e) {

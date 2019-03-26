@@ -136,12 +136,6 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), object.getString("message"), Toast.LENGTH_SHORT).show(); //pop-up message
                     user = object.getJSONArray("user");
 
-                    /*
-                    String lclPassword;
-                    lclPassword = user.getJSONObject(0).get("password").toString(); // Assigns password from JSON object to string
-                    */
-
-                    //Log.i("Variable Contents 2", );
                     if (verifyPassword(userentrPassword, user.getJSONObject(0).get("password").toString(), user.getJSONObject(0).get("salt").toString())){ //Checks to see if password equals inputed password
                         startMenuFunction(); //Call to function that opens next page
                     }
