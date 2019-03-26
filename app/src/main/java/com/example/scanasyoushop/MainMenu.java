@@ -56,6 +56,5 @@ public class MainMenu extends AppCompatActivity {
     //Opens page
     public void openPage(String list_name){
         startActivity(new Intent(this, Scan_To_List.class).putExtra("list_name", list_name));
-
     }
 }

@@ -18,6 +18,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <ListView
+        android:id="@+id/list_of_lists"
         android:layout_width="395dp"
         android:layout_height="599dp"
         android:layout_marginStart="8dp"
