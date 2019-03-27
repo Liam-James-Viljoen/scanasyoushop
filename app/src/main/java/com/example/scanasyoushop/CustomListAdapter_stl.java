@@ -1,6 +1,7 @@
 package com.example.scanasyoushop;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +37,14 @@ public class CustomListAdapter_stl extends ArrayAdapter<JSONObject> {
 
             e.printStackTrace();
 
+        }
+        if (itemView != null){
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Log.i("Variable Contents:", "It works");
+                }
+            });
         }
         return itemView;
     }
