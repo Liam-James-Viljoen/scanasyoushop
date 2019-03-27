@@ -35,6 +35,8 @@
 
     <string name="tV_list_of_lists">Your Shopping Lists</string>
 
+    <string name="tv_delete_item">Would you like to delete this item?</string>
+
     <!--Page names-->
     <string name="Main_Menu">Main Menu</string>
     <string name="Login">Login</string>

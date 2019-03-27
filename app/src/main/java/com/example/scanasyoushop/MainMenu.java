@@ -29,7 +29,7 @@ public class MainMenu extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
         builder.setTitle("Set List Name");
 
-        View viewInflated = LayoutInflater.from(view.getContext()).inflate(R.layout.test, (ViewGroup) findViewById(android.R.id.content), false);
+        View viewInflated = LayoutInflater.from(view.getContext()).inflate(R.layout.popup_name_list, (ViewGroup) findViewById(android.R.id.content), false);
         // Set up the input
         final EditText input = (EditText) viewInflated.findViewById(R.id.inputListName);
         // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
