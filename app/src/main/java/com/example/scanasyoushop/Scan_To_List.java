@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -85,6 +86,13 @@ public class Scan_To_List extends AppCompatActivity {
         ListView list_of_items = (ListView)findViewById(R.id.list_of_items);
         CustomListAdapter_stl customListAdapter_stl = new CustomListAdapter_stl(this, R.layout.listview_row_stl, item);
         list_of_items.setAdapter(customListAdapter_stl);
+        list_of_items.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Log.i("XXXXXXXXXXXXXXXXXXX", "It works");
+                Log.i("XXXXXXXXXXXXXXXXXXX", "" + i);
+            }
+        });
     }
     public void readItems(String bar_Code){ //Sends the request to PerformNetworkRequestClass
         HashMap<String, String> params = new HashMap<>();

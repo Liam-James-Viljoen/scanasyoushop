@@ -24,7 +24,7 @@ public class CustomListAdapter_stl extends ArrayAdapter<JSONObject> {
         this.list=list;
     }
     @Override
-    public View getView(int position, View convertView, ViewGroup parent){
+    public View getView(final int position, View convertView, ViewGroup parent){
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View itemView = inflater.inflate(vg, parent, false);
 
@@ -37,14 +37,6 @@ public class CustomListAdapter_stl extends ArrayAdapter<JSONObject> {
 
             e.printStackTrace();
 
-        }
-        if (itemView != null){
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Log.i("Variable Contents:", "It works");
-                }
-            });
         }
         return itemView;
     }
