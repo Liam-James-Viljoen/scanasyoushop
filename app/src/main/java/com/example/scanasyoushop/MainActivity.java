@@ -1,6 +1,7 @@
 package com.example.scanasyoushop;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -30,6 +31,8 @@ import javax.crypto.spec.PBEKeySpec;
 
 public class MainActivity extends AppCompatActivity {
 
+
+
     //Defining views
     EditText usernameText, passwordText;
 
@@ -49,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
     }
     public void mainMenuPageFunction(View view) throws JSONException { //Triggered on login button
         usernameText = (EditText)findViewById(R.id.usernameText);
@@ -129,14 +133,13 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             try {
-                Log.i("Variable Contents:", s);
                 JSONObject object = new JSONObject(s); //Seems to turn returned data into a JSON object
-
                 if (!object.getBoolean("error")) {
                     Toast.makeText(getApplicationContext(), object.getString("message"), Toast.LENGTH_SHORT).show(); //pop-up message
                     user = object.getJSONArray("user");
 
                     if (verifyPassword(userentrPassword, user.getJSONObject(0).get("password").toString(), user.getJSONObject(0).get("salt").toString())){ //Checks to see if password equals inputed password
+
                         startMenuFunction(); //Call to function that opens next page
                     }
 

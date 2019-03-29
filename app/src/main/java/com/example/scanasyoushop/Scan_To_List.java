@@ -2,6 +2,7 @@ package com.example.scanasyoushop;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.os.AsyncTask;
 import android.support.v7.app.AlertDialog;
@@ -22,6 +23,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -35,6 +38,10 @@ public class Scan_To_List extends AppCompatActivity {
     JSONObject list_JSON_obj = new JSONObject();
     JSONArray list_items_JSON_array = new JSONArray();
 
+    //
+    NumberFormat formatter = new DecimalFormat("#0.00");
+    Double total = 000.00;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +53,7 @@ public class Scan_To_List extends AppCompatActivity {
         TextView tV_list_name = (TextView) findViewById(R.id.tV_list_name);
         tV_list_name.setText(list_name);
         tV_list_name.setPaintFlags(tV_list_name.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+
     }
 
     //Scans the barcode using the third party application
@@ -59,11 +67,8 @@ public class Scan_To_List extends AppCompatActivity {
         if (scanResult != null) {
             String bar_Code = scanResult.getContents();
             bar_Code.replaceAll("[^\\d]", "" );
-            Log.i("Variable Contents:", bar_Code);
             readItems(bar_Code);
-
         }
-        // else continue with any other code you need in the method
     }
 
     public void add_item(JSONArray returnedInfo) throws JSONException {
@@ -73,11 +78,27 @@ public class Scan_To_List extends AppCompatActivity {
         item.put("item_name", item_name);
         item.put("price", price);
 
+        Double temp = Double.parseDouble(price);
+        total = temp + total;
+        String str_total = "£" .concat(formatter.format(total).toString());
+        TextView tv_total_sum = (TextView) findViewById(R.id.tv_total_sum);
+        tv_total_sum.setText(str_total);
+
         list_items_JSON_array.put(item);
         refresh_list();
         Log.i("Variable Contents:", list_items_JSON_array.toString());
     }
+    public void deleteItem(int position)throws JSONException{
+        String price = list_items_JSON_array.getJSONObject(position).get("price").toString();
+        Double temp = Double.parseDouble(price);
+        total = total - temp;
+        String str_total = "£" .concat(formatter.format(total).toString());
+        TextView tv_total_sum = (TextView) findViewById(R.id.tv_total_sum);
+        tv_total_sum.setText(str_total);
 
+        list_items_JSON_array.remove(position);
+        refresh_list();
+    }
     public void refresh_list(){
         ArrayList<JSONObject> item = new ArrayList<JSONObject>();
         try {
@@ -106,7 +127,11 @@ public class Scan_To_List extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
-                        deleteItem(position);
+                        try {
+                            deleteItem(position);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 });
                 builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
@@ -120,10 +145,7 @@ public class Scan_To_List extends AppCompatActivity {
             }
         });
     }
-    public void deleteItem(int position){
-        list_items_JSON_array.remove(position);
-        refresh_list();
-    }
+
     public void readItems(String bar_Code){ //Sends the request to PerformNetworkRequestClass
         HashMap<String, String> params = new HashMap<>();
         params.put("bar_code", bar_Code);
