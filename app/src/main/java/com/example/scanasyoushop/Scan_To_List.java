@@ -1,13 +1,19 @@
 package com.example.scanasyoushop;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.AsyncTask;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,7 +45,7 @@ public class Scan_To_List extends AppCompatActivity {
         String list_name = bundle.getString("list_name");
         TextView tV_list_name = (TextView) findViewById(R.id.tV_list_name);
         tV_list_name.setText(list_name);
-
+        tV_list_name.setPaintFlags(tV_list_name.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
     }
 
     //Scans the barcode using the third party application
@@ -83,16 +89,40 @@ public class Scan_To_List extends AppCompatActivity {
         } catch (JSONException e){
             e.printStackTrace();
         }
-        ListView list_of_items = (ListView)findViewById(R.id.list_of_items);
+        final ListView list_of_items = (ListView)findViewById(R.id.list_of_items);
         CustomListAdapter_stl customListAdapter_stl = new CustomListAdapter_stl(this, R.layout.listview_row_stl, item);
         list_of_items.setAdapter(customListAdapter_stl);
         list_of_items.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Log.i("XXXXXXXXXXXXXXXXXXX", "It works");
-                Log.i("XXXXXXXXXXXXXXXXXXX", "" + i);
+            public void onItemClick(AdapterView<?> adapterView, View view, final int position, long l) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+
+                View viewInflated = LayoutInflater.from(view.getContext()).inflate(R.layout.popup_remove_list_item, (ViewGroup) findViewById(android.R.id.content), false);
+                // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+                builder.setView(viewInflated);
+
+                // Set up the buttons
+                builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        deleteItem(position);
+                    }
+                });
+                builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                builder.show();
             }
         });
+    }
+    public void deleteItem(int position){
+        list_items_JSON_array.remove(position);
+        refresh_list();
     }
     public void readItems(String bar_Code){ //Sends the request to PerformNetworkRequestClass
         HashMap<String, String> params = new HashMap<>();

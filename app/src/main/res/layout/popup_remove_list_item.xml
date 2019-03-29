@@ -12,14 +12,17 @@
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="30dp">
 
         <TextView
             android:id="@+id/tv_delete_item"
             android:layout_width="match_parent"
-            android:layout_height="80px"
+            android:layout_height="match_parent"
             android:text="@string/tv_delete_item"
-            android:textSize="24sp" />
+            android:textAlignment="center"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="18sp" />
+
 
     </android.support.design.widget.TextInputLayout>
 
