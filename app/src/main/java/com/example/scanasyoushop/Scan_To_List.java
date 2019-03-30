@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -19,6 +20,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -29,6 +32,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Scan_To_List extends AppCompatActivity {
+
+    //
+    SharedPreferences sharedPref;
+    String currentUser;
+
+    //
+    String list_name;
 
     //integer codes for GET and POST requests
     private static final int CODE_GET_REQUEST = 1024;
@@ -47,9 +57,13 @@ public class Scan_To_List extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scan__to__list);
 
+        sharedPref= PreferenceManager
+                .getDefaultSharedPreferences(this);
+        currentUser = sharedPref.getString("Username", "");
+
         //Gets the name from the previous intent and sets the text view to its value
         Bundle bundle = getIntent().getExtras();
-        String list_name = bundle.getString("list_name");
+        list_name = bundle.getString("list_name");
         TextView tV_list_name = (TextView) findViewById(R.id.tV_list_name);
         tV_list_name.setText(list_name);
         tV_list_name.setPaintFlags(tV_list_name.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
@@ -61,6 +75,7 @@ public class Scan_To_List extends AppCompatActivity {
         IntentIntegrator intentIntegrator = new IntentIntegrator(this);
         intentIntegrator.initiateScan(IntentIntegrator.ALL_CODE_TYPES);
     }
+
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
 
@@ -88,6 +103,7 @@ public class Scan_To_List extends AppCompatActivity {
         refresh_list();
         Log.i("Variable Contents:", list_items_JSON_array.toString());
     }
+
     public void deleteItem(int position)throws JSONException{
         String price = list_items_JSON_array.getJSONObject(position).get("price").toString();
         Double temp = Double.parseDouble(price);
@@ -99,6 +115,7 @@ public class Scan_To_List extends AppCompatActivity {
         list_items_JSON_array.remove(position);
         refresh_list();
     }
+
     public void refresh_list(){
         ArrayList<JSONObject> item = new ArrayList<JSONObject>();
         try {
@@ -152,6 +169,56 @@ public class Scan_To_List extends AppCompatActivity {
         PerformNetworkRequest request = new PerformNetworkRequest(Api.URL_SELECT_ITEM, params, CODE_POST_REQUEST);
         request.execute();
     }
+
+    public void checkout(View view){
+        AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+
+        View viewInflated = LayoutInflater.from(view.getContext()).inflate(R.layout.popup_save_list, (ViewGroup) findViewById(android.R.id.content), false);
+        // Set up the input
+        final EditText input = (EditText) viewInflated.findViewById(R.id.inputListName);
+        // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+        builder.setView(viewInflated);
+
+        // Set up the buttons
+        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                saveList();
+            }
+        });
+        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
+    }
+
+    public void saveList(){
+        TinyDB tinyDB = new TinyDB(this);
+        Gson gson = new Gson();
+        String json = new Gson().toJson(list_items_JSON_array); //converts array list to string
+        if (tinyDB.getString(currentUser) == null){
+            //Make list of lists
+        }else{
+            //get list of lists and add to it
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 
     // REFRENCE ------------> https://www.simplifiedcoding.net/android-mysql-tutorial-to-perform-basic-crud-operation/
     //Inner class to perform network requests

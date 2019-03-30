@@ -3,6 +3,7 @@ package com.example.scanasyoushop;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -19,10 +20,19 @@ import org.json.JSONObject;
 
 public class MainMenu extends AppCompatActivity {
 
+    //
+    SharedPreferences sharedPref;
+    String currentUser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
+
+        sharedPref= PreferenceManager
+                .getDefaultSharedPreferences(this);
+        currentUser = sharedPref.getString("Username", "");
+        refreshList();
     }
 
     public void dialogBoxActivated(View view){
@@ -56,5 +66,11 @@ public class MainMenu extends AppCompatActivity {
     //Opens page
     public void openPage(String list_name){
         startActivity(new Intent(this, Scan_To_List.class).putExtra("list_name", list_name));
+    }
+
+    public void refreshList(){
+        TinyDB tinyDB = new TinyDB(this);
+
+        //tinyDB.getObject(username, );
     }
 }

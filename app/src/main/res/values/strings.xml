@@ -37,6 +37,8 @@
 
     <string name="tv_delete_item">Would you like to delete this item?</string>
 
+    <string name="tv_save_list">Would you like to save this list?</string>
+
     <!--Page names-->
     <string name="Main_Menu">Main Menu</string>
     <string name="Login">Login</string>
