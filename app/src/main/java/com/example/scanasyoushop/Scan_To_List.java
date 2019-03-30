@@ -20,12 +20,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -207,7 +201,6 @@ public class Scan_To_List extends AppCompatActivity {
     }
 
     public void saveList() throws JSONException {
-        Gson gson = new Gson();
         String str_list_of_lists;
         JSONArray list_of_lists = new JSONArray();
 
