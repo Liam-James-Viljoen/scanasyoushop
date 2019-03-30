@@ -69,8 +69,6 @@ public class MainMenu extends AppCompatActivity {
     }
 
     public void refreshList(){
-        TinyDB tinyDB = new TinyDB(this);
 
-        //tinyDB.getObject(username, );
     }
 }

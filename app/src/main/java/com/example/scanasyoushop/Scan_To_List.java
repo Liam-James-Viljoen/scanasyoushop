@@ -21,10 +21,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -184,7 +189,11 @@ public class Scan_To_List extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
-                saveList();
+                try {
+                    saveList();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         });
         builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
@@ -197,15 +206,16 @@ public class Scan_To_List extends AppCompatActivity {
         builder.show();
     }
 
-    public void saveList(){
-        TinyDB tinyDB = new TinyDB(this);
+    public void saveList() throws JSONException {
         Gson gson = new Gson();
-        String json = new Gson().toJson(list_items_JSON_array); //converts array list to string
-        if (tinyDB.getString(currentUser) == null){
-            //Make list of lists
-        }else{
-            //get list of lists and add to it
-        }
+        String str_list_of_lists;
+        JSONArray list_of_lists = new JSONArray();
+
+        //Creates the list
+        list_JSON_obj.put("List name", list_name);
+        list_JSON_obj.put("Items", list_items_JSON_array);
+
+
     }
 
 
