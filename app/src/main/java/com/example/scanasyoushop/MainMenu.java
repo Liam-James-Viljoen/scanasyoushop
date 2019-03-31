@@ -12,10 +12,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ListView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 
 public class MainMenu extends AppCompatActivity {
@@ -32,7 +35,35 @@ public class MainMenu extends AppCompatActivity {
         sharedPref= PreferenceManager
                 .getDefaultSharedPreferences(this);
         currentUser = sharedPref.getString("Username", "");
+
         refreshList();
+    }
+
+    public void refreshList(){
+        //Intitializes read writer
+        JSONFileReadWriter jsonFileReadWriter = new JSONFileReadWriter();
+
+        JSONArray list_of_lists_JA = new JSONArray();
+
+        ArrayList<JSONObject> list_of_lists_AL = new ArrayList<JSONObject>();
+
+        list_of_lists_JA = jsonFileReadWriter.readFile(this, currentUser);//Add list to users list of lists
+
+        Log.i("YYYYY", list_of_lists_JA.toString());
+
+        try {
+            for (int i=0; i<list_of_lists_JA.length(); i++){
+                list_of_lists_AL.add(list_of_lists_JA.getJSONObject(i));
+                Log.i("XXXXX", list_of_lists_JA.getJSONObject(i).toString());
+            }
+        } catch (JSONException e){
+            e.printStackTrace();
+        }
+
+        final ListView lists = (ListView)findViewById(R.id.list_of_lists);
+        CustomListAdapter_mm customListAdapter_stl = new CustomListAdapter_mm(this, R.layout.listview_row_mm, list_of_lists_AL);
+        lists.setAdapter(customListAdapter_stl);
+
     }
 
     public void dialogBoxActivated(View view){
@@ -63,12 +94,9 @@ public class MainMenu extends AppCompatActivity {
 
         builder.show();
     }
-    //Opens page
+
     public void openPage(String list_name){
         startActivity(new Intent(this, Scan_To_List.class).putExtra("list_name", list_name));
     }
 
-    public void refreshList(){
-
-    }
 }
