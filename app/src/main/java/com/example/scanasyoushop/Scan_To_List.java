@@ -1,5 +1,6 @@
 package com.example.scanasyoushop;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -208,9 +209,17 @@ public class Scan_To_List extends AppCompatActivity {
         list_JSON_obj.put("List name", list_name);
         list_JSON_obj.put("Items", list_items_JSON_array);
 
+        JSONFileReadWriter jsonFileReadWriter = new JSONFileReadWriter();
+        jsonFileReadWriter.writeFile(this, currentUser, list_JSON_obj);
 
+        readTest();
     }
-
+    public void readTest(){
+        JSONFileReadWriter jsonFileReadWriter = new JSONFileReadWriter();
+        JSONObject test = new JSONObject();
+        test = jsonFileReadWriter.readFile(this, currentUser);
+        Log.i("XXXXXX", test.toString());
+    }
 
 
 
