@@ -209,18 +209,23 @@ public class Scan_To_List extends AppCompatActivity {
         list_JSON_obj.put("List name", list_name);
         list_JSON_obj.put("Items", list_items_JSON_array);
 
+        //Intitializes read writer
         JSONFileReadWriter jsonFileReadWriter = new JSONFileReadWriter();
-        jsonFileReadWriter.writeFile(this, currentUser, list_JSON_obj);
 
-        readTest();
-    }
-    public void readTest(){
-        JSONFileReadWriter jsonFileReadWriter = new JSONFileReadWriter();
-        JSONObject test = new JSONObject();
+
+        if (jsonFileReadWriter.readFile(this, currentUser) != null){  //If this isn't the users first list
+            list_of_lists = jsonFileReadWriter.readFile(this, currentUser); //Read lists
+            list_of_lists.put(list_JSON_obj); //Add list to users list of lists
+
+        }else { //If this is the users first list
+            list_of_lists.put(list_JSON_obj); //Add list to users list of lists
+        }
+        jsonFileReadWriter.writeFile(this, currentUser, list_of_lists);
+
+        JSONArray test = new JSONArray();
         test = jsonFileReadWriter.readFile(this, currentUser);
-        Log.i("XXXXXX", test.toString());
+        Log.i("XXXX", test.toString());
     }
-
 
 
 
