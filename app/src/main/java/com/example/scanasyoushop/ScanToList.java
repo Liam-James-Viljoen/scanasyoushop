@@ -221,7 +221,6 @@ public class ScanToList extends AppCompatActivity {
 
         JSONArray test = new JSONArray();
         test = jsonFileReadWriter.readFile(this, currentUser);
-        Log.i("XXXX", test.toString());
     }
 
 
