@@ -6,6 +6,18 @@
     android:layout_height="match_parent"
     tools:context=".ScanToList">
 
+    <ListView
+        android:id="@+id/scaned_items_list"
+        android:layout_width="395dp"
+        android:layout_height="265dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="280dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tV_list_name" />
+
     <Button
         android:id="@+id/b_store_checkout"
         android:layout_width="115dp"
@@ -38,13 +50,14 @@
         android:text="@string/tv_total_sum"
         android:textSize="36sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/tV_total_label"
         app:layout_constraintTop_toBottomOf="@+id/scaned_items_list" />
 
     <ListView
-        android:id="@+id/scaned_items_list"
+        android:id="@+id/original_list"
         android:layout_width="395dp"
-        android:layout_height="539dp"
+        android:layout_height="265dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
@@ -73,7 +86,7 @@
         android:id="@+id/tV_total_label"
         android:layout_width="138dp"
         android:layout_height="44dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:text="@string/tV_total_label"
         android:textAlignment="textStart"

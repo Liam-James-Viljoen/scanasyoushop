@@ -1,6 +1,5 @@
 package com.example.scanasyoushop;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -15,7 +14,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -31,7 +29,7 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Scan_To_List extends AppCompatActivity {
+public class ScanToList extends AppCompatActivity {
 
     //
     SharedPreferences sharedPref;
@@ -101,7 +99,6 @@ public class Scan_To_List extends AppCompatActivity {
 
         list_items_JSON_array.put(item);
         refresh_list();
-        Log.i("Variable Contents:", list_items_JSON_array.toString());
     }
 
     public void deleteItem(int position)throws JSONException{
@@ -127,7 +124,7 @@ public class Scan_To_List extends AppCompatActivity {
         } catch (JSONException e){
             e.printStackTrace();
         }
-        final ListView list_of_items = (ListView)findViewById(R.id.list_of_items);
+        final ListView list_of_items = (ListView)findViewById(R.id.scaned_items_list);
         CustomListAdapter_stl customListAdapter_stl = new CustomListAdapter_stl(this, R.layout.listview_row_stl, item);
         list_of_items.setAdapter(customListAdapter_stl);
         list_of_items.setOnItemClickListener(new AdapterView.OnItemClickListener() {

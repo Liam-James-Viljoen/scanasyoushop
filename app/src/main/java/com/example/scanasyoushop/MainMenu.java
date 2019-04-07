@@ -7,10 +7,10 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 
@@ -26,6 +26,10 @@ public class MainMenu extends AppCompatActivity {
     //
     SharedPreferences sharedPref;
     String currentUser;
+
+    //
+    JSONArray list_of_lists_JA = new JSONArray();
+    ArrayList<JSONObject> list_of_lists_AL = new ArrayList<JSONObject>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,18 +47,13 @@ public class MainMenu extends AppCompatActivity {
         //Intitializes read writer
         JSONFileReadWriter jsonFileReadWriter = new JSONFileReadWriter();
 
-        JSONArray list_of_lists_JA = new JSONArray();
-
-        ArrayList<JSONObject> list_of_lists_AL = new ArrayList<JSONObject>();
-
         list_of_lists_JA = jsonFileReadWriter.readFile(this, currentUser);//Add list to users list of lists
 
-        Log.i("YYYYY", list_of_lists_JA.toString());
-
         try {
-            for (int i=0; i<list_of_lists_JA.length(); i++){
-                list_of_lists_AL.add(list_of_lists_JA.getJSONObject(i));
-                Log.i("XXXXX", list_of_lists_JA.getJSONObject(i).toString());
+            if (list_of_lists_JA != null){
+                for (int i=0; i<list_of_lists_JA.length(); i++){
+                    list_of_lists_AL.add(list_of_lists_JA.getJSONObject(i));
+                }
             }
         } catch (JSONException e){
             e.printStackTrace();
@@ -63,6 +62,40 @@ public class MainMenu extends AppCompatActivity {
         final ListView lists = (ListView)findViewById(R.id.list_of_lists);
         CustomListAdapter_mm customListAdapter_stl = new CustomListAdapter_mm(this, R.layout.listview_row_mm, list_of_lists_AL);
         lists.setAdapter(customListAdapter_stl);
+        final JSONArray finalList_of_lists_JA = list_of_lists_JA;
+        lists.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, final int position, long l) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+
+                View viewInflated = LayoutInflater.from(view.getContext()).inflate(R.layout.popup_start_checklist, (ViewGroup) findViewById(android.R.id.content), false);
+
+                builder.setView(viewInflated);
+
+                // Set up the buttons
+                builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        try {
+                            JSONObject selectedList = new JSONObject();
+                            selectedList = list_of_lists_JA.getJSONObject(position);
+                            openChecklistScanPage(selectedList);
+                        }catch (JSONException e){
+                            e.printStackTrace();
+                        }
+                        dialog.dismiss();
+                    }
+                });
+                builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                builder.show();
+            }
+        });
 
     }
 
@@ -82,7 +115,7 @@ public class MainMenu extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
                 String list_name = input.getText().toString();
-                openPage(list_name);
+                openScanToListPage(list_name);
             }
         });
         builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
@@ -95,8 +128,11 @@ public class MainMenu extends AppCompatActivity {
         builder.show();
     }
 
-    public void openPage(String list_name){
-        startActivity(new Intent(this, Scan_To_List.class).putExtra("list_name", list_name));
+    public void openScanToListPage(String list_name){
+        startActivity(new Intent(this, ScanToList.class).putExtra("list_name", list_name));
+    }
+    public void openChecklistScanPage(JSONObject selectedList){
+        startActivity(new Intent(this, ChecklistScan.class).putExtra("list", selectedList.toString()));
     }
 
 }

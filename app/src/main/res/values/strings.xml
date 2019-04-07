@@ -39,6 +39,8 @@
 
     <string name="tv_save_list">Would you like to save this list?</string>
 
+    <string name="tv_start_checklist">Would you like to start a checklist?</string>
+
     <!--Page names-->
     <string name="Main_Menu">Main Menu</string>
     <string name="Login">Login</string>
