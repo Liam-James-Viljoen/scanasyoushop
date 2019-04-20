@@ -114,7 +114,6 @@ public class ChecklistScan extends AppCompatActivity {
         TextView tv_total_sum = (TextView) findViewById(R.id.tv_total_sum);
         tv_total_sum.setText(str_total);
 
-        Log.i("XXXXX", item.toString());
         currentListItems.put(item);
         removeFromChecklist(item_name);
         refresh_list();
