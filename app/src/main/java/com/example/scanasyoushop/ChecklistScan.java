@@ -29,7 +29,7 @@ public class ChecklistScan extends AppCompatActivity {
 
     //
     JSONArray originalListItems;
-    JSONArray currentListItems;
+    JSONArray currentListItems = new JSONArray();
 
     //integer codes for GET and POST requests
     private static final int CODE_GET_REQUEST = 1024;
@@ -114,8 +114,25 @@ public class ChecklistScan extends AppCompatActivity {
         TextView tv_total_sum = (TextView) findViewById(R.id.tv_total_sum);
         tv_total_sum.setText(str_total);
 
+        Log.i("XXXXX", item.toString());
         currentListItems.put(item);
+        removeFromChecklist(item_name);
         refresh_list();
+    }
+    public void removeFromChecklist(String item_name){
+        try {
+            if (originalListItems != null){
+                for (int i=0; i<originalListItems.length(); i++){
+                    if (originalListItems.getJSONObject(i).get("item_name").equals(item_name)){
+                        originalListItems.remove(i);
+                        break;
+                    }
+                }
+            }
+        } catch (JSONException e){
+            e.printStackTrace();
+        }
+        set_original_list();
     }
     public void refresh_list(){
         ArrayList<JSONObject> item = new ArrayList<JSONObject>();
