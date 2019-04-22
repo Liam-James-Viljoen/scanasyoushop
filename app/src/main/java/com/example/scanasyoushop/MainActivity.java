@@ -85,7 +85,10 @@ public class MainActivity extends AppCompatActivity {
             passwordText.requestFocus();
             return;
         }
-        if (usernameStr.equals("root") && passwordStr.equals("root")){
+        if (usernameStr.equals("root") && passwordStr.equals("root")){ //This code is for testing without the database access
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putString("Username", "root");
+            editor.apply();
             startMenuFunction();
         }else{
             readUsers(usernameStr, passwordStr);
