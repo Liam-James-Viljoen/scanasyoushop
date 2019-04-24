@@ -24,7 +24,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ChecklistScan"></activity>
+        <meta-data
+            android:name="com.google.android.gms.wallet.api.enabled"
+            android:value="true" />
+        <activity android:name=".PaymentCheckout"></activity>
+        <activity android:name=".ChecklistScan" />
         <activity android:name=".ScanToList" />
         <activity
             android:name=".RegisterPage"

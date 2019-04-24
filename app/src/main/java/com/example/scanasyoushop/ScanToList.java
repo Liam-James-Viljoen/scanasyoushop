@@ -183,6 +183,7 @@ public class ScanToList extends AppCompatActivity {
                 dialog.dismiss();
                 try {
                     saveList();
+                    openCheckoutPage();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -197,7 +198,9 @@ public class ScanToList extends AppCompatActivity {
 
         builder.show();
     }
-
+    public void openCheckoutPage(){
+        startActivity(new Intent(this, PaymentCheckout.class));
+    }
     public void saveList() throws JSONException {
         String str_list_of_lists;
         JSONArray list_of_lists = new JSONArray();
