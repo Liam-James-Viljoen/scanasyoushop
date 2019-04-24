@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -189,6 +190,37 @@ public class ChecklistScan extends AppCompatActivity {
 
         currentListItems.remove(position);
         refresh_list();
+    }
+
+    public void checkout(View view){
+        AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+
+        View viewInflated = LayoutInflater.from(view.getContext()).inflate(R.layout.popup_save_list, (ViewGroup) findViewById(android.R.id.content), false);
+        // Set up the input
+        final EditText input = (EditText) viewInflated.findViewById(R.id.inputListName);
+        // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+        builder.setView(viewInflated);
+
+        // Set up the buttons
+        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                openCheckoutPage();
+
+            }
+        });
+        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
+    }
+    public void openCheckoutPage(){
+        startActivity(new Intent(this, PaymentCheckout.class));
     }
 
     // REFRENCE ------------> https://www.simplifiedcoding.net/android-mysql-tutorial-to-perform-basic-crud-operation/
