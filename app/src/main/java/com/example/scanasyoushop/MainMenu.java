@@ -7,10 +7,12 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
@@ -72,7 +74,36 @@ public class MainMenu extends AppCompatActivity {
 
                 builder.setView(viewInflated);
 
+                Button b_start_checklist = (Button) viewInflated.findViewById(R.id.b_start_checklist);
+                b_start_checklist.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        //Start checklist - Need to pass data into here
+                        try {
+                            JSONObject selectedList = new JSONObject();
+                            selectedList = list_of_lists_JA.getJSONObject(position);
+                            openChecklistScanPage(selectedList);
+                        }catch (JSONException e){
+                            e.printStackTrace();
+                        }
+                    }
+                });
+
+                Button b_delete_list = (Button) viewInflated.findViewById(R.id.b_delete_list);
+                b_delete_list.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        //Delete List
+                    }
+                });
+                builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
                 // Set up the buttons
+                /*
                 builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -86,13 +117,8 @@ public class MainMenu extends AppCompatActivity {
                         dialog.dismiss();
                     }
                 });
-                builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
 
+                */
                 builder.show();
             }
         });
@@ -126,6 +152,8 @@ public class MainMenu extends AppCompatActivity {
         });
 
         builder.show();
+
+
     }
 
     public void openScanToListPage(String list_name){
@@ -134,5 +162,7 @@ public class MainMenu extends AppCompatActivity {
     public void openChecklistScanPage(JSONObject selectedList){
         startActivity(new Intent(this, ChecklistScan.class).putExtra("list", selectedList.toString()));
     }
-
+    public void test(View view){
+        Log.i("xxxxxxxxxxx", "This is a test");
+    }
 }

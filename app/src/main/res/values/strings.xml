@@ -41,6 +41,9 @@
 
     <string name="tv_start_checklist">Would you like to start a checklist?</string>
 
+    <string name="tv_delete_list">Delete this checklist?</string>
+
+
     <!--Page names-->
     <string name="Main_Menu">Main Menu</string>
     <string name="Login">Login</string>
