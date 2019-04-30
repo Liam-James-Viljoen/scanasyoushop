@@ -2,10 +2,7 @@ package com.example.scanasyoushop;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Paint;
 import android.os.AsyncTask;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -23,20 +20,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class ScanToList extends AppCompatActivity {
-
-    //
-    SharedPreferences sharedPref;
-    String currentUser;
-
-    //
-    String list_name;
+public class UnNamedScanToList extends AppCompatActivity {
 
     //integer codes for GET and POST requests
     private static final int CODE_GET_REQUEST = 1024;
@@ -53,27 +42,19 @@ public class ScanToList extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_scan__to__list);
-
-        sharedPref= PreferenceManager
-                .getDefaultSharedPreferences(this);
-        currentUser = sharedPref.getString("Username", "");
-
-        //Gets the name from the previous intent and sets the text view to its value
-        Bundle bundle = getIntent().getExtras();
-        list_name = bundle.getString("list_name");
-        TextView tV_list_name = (TextView) findViewById(R.id.tV_list_name);
-        tV_list_name.setText(list_name);
-        tV_list_name.setPaintFlags(tV_list_name.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-
+        setContentView(R.layout.activity_un_named_scan_to_list);
     }
-
     //Scans the barcode using the third party application
     public void scanbarcode (View view){
         IntentIntegrator intentIntegrator = new IntentIntegrator(this);
         intentIntegrator.initiateScan(IntentIntegrator.ALL_CODE_TYPES);
     }
-
+    public void readItems(String bar_Code){ //Sends the request to PerformNetworkRequestClass
+        HashMap<String, String> params = new HashMap<>();
+        params.put("bar_code", bar_Code);
+        UnNamedScanToList.PerformNetworkRequest request = new UnNamedScanToList.PerformNetworkRequest(Api.URL_SELECT_ITEM, params, CODE_POST_REQUEST);
+        request.execute();
+    }
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
 
@@ -83,7 +64,6 @@ public class ScanToList extends AppCompatActivity {
             readItems(bar_Code);
         }
     }
-
     public void add_item(JSONArray returnedInfo) throws JSONException {
         JSONObject item = new JSONObject();
         String item_name = returnedInfo.getJSONObject(0).get("item_name").toString();
@@ -100,7 +80,6 @@ public class ScanToList extends AppCompatActivity {
         list_items_JSON_array.put(item);
         refresh_list();
     }
-
     public void deleteItem(int position)throws JSONException{
         String price = list_items_JSON_array.getJSONObject(position).get("price").toString();
         Double temp = Double.parseDouble(price);
@@ -112,7 +91,6 @@ public class ScanToList extends AppCompatActivity {
         list_items_JSON_array.remove(position);
         refresh_list();
     }
-
     public void refresh_list(){
         ArrayList<JSONObject> item = new ArrayList<JSONObject>();
         try {
@@ -159,79 +137,9 @@ public class ScanToList extends AppCompatActivity {
             }
         });
     }
-
-    public void readItems(String bar_Code){ //Sends the request to PerformNetworkRequestClass
-        HashMap<String, String> params = new HashMap<>();
-        params.put("bar_code", bar_Code);
-        PerformNetworkRequest request = new PerformNetworkRequest(Api.URL_SELECT_ITEM, params, CODE_POST_REQUEST);
-        request.execute();
-    }
-
     public void checkout(View view){
-        AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
-
-        View viewInflated = LayoutInflater.from(view.getContext()).inflate(R.layout.popup_save_list, (ViewGroup) findViewById(android.R.id.content), false);
-        // Set up the input
-        final EditText input = (EditText) viewInflated.findViewById(R.id.inputListName);
-        // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
-        builder.setView(viewInflated);
-
-        // Set up the buttons
-        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-                try {
-                    saveList();
-                    openCheckoutPage();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-
-        builder.show();
-    }
-    public void openCheckoutPage(){
         startActivity(new Intent(this, PaymentCheckout.class));
     }
-    public void saveList() throws JSONException {
-        String str_list_of_lists;
-        JSONArray list_of_lists = new JSONArray();
-
-        //Creates the list
-        list_JSON_obj.put("List name", list_name);
-        list_JSON_obj.put("Items", list_items_JSON_array);
-
-        //Intitializes read writer
-        JSONFileReadWriter jsonFileReadWriter = new JSONFileReadWriter();
-
-
-        if (jsonFileReadWriter.readFile(this, currentUser) != null){  //If this isn't the users first list
-            list_of_lists = jsonFileReadWriter.readFile(this, currentUser); //Read lists
-            list_of_lists.put(list_JSON_obj); //Add list to users list of lists
-
-        }else { //If this is the users first list
-            list_of_lists.put(list_JSON_obj); //Add list to users list of lists
-        }
-        jsonFileReadWriter.writeFile(this, currentUser, list_of_lists);
-    }
-
-
-
-
-
-
-
-
-
-
 
     // REFRENCE ------------> https://www.simplifiedcoding.net/android-mysql-tutorial-to-perform-basic-crud-operation/
     //Inner class to perform network requests
@@ -286,3 +194,4 @@ public class ScanToList extends AppCompatActivity {
         }
     }
 }
+

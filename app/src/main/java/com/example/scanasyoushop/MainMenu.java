@@ -94,6 +94,8 @@ public class MainMenu extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
                         //Delete List
+                        list_of_lists_JA.remove(position);
+                        saveListState();
                     }
                 });
                 builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
@@ -124,7 +126,14 @@ public class MainMenu extends AppCompatActivity {
         });
 
     }
+    public void saveListState(){
+        //Intitializes read writer
+        JSONFileReadWriter jsonFileReadWriter = new JSONFileReadWriter();
+        jsonFileReadWriter.writeFile(this, currentUser, list_of_lists_JA);
+        list_of_lists_AL.clear();
 
+        refreshList();
+    }
     public void dialogBoxActivated(View view){
         AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
         builder.setTitle("Set List Name");
@@ -153,14 +162,15 @@ public class MainMenu extends AppCompatActivity {
 
         builder.show();
 
-
     }
-
     public void openScanToListPage(String list_name){
         startActivity(new Intent(this, ScanToList.class).putExtra("list_name", list_name));
     }
     public void openChecklistScanPage(JSONObject selectedList){
         startActivity(new Intent(this, ChecklistScan.class).putExtra("list", selectedList.toString()));
+    }
+    public void openUnNamedList(View view){
+        startActivity(new Intent(this, UnNamedScanToList.class));
     }
     public void test(View view){
         Log.i("xxxxxxxxxxx", "This is a test");
