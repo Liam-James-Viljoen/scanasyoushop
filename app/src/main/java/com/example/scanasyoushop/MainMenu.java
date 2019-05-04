@@ -48,7 +48,6 @@ public class MainMenu extends AppCompatActivity {
     public void refreshList(){
         //Intitializes read writer
         JSONFileReadWriter jsonFileReadWriter = new JSONFileReadWriter();
-
         list_of_lists_JA = jsonFileReadWriter.readFile(this, currentUser);//Add list to users list of lists
 
         try {
@@ -60,7 +59,6 @@ public class MainMenu extends AppCompatActivity {
         } catch (JSONException e){
             e.printStackTrace();
         }
-
         final ListView lists = (ListView)findViewById(R.id.list_of_lists);
         CustomListAdapter_mm customListAdapter_stl = new CustomListAdapter_mm(this, R.layout.listview_row_mm, list_of_lists_AL);
         lists.setAdapter(customListAdapter_stl);
@@ -104,23 +102,6 @@ public class MainMenu extends AppCompatActivity {
                         dialog.cancel();
                     }
                 });
-                // Set up the buttons
-                /*
-                builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        try {
-                            JSONObject selectedList = new JSONObject();
-                            selectedList = list_of_lists_JA.getJSONObject(position);
-                            openChecklistScanPage(selectedList);
-                        }catch (JSONException e){
-                            e.printStackTrace();
-                        }
-                        dialog.dismiss();
-                    }
-                });
-
-                */
                 builder.show();
             }
         });
@@ -172,7 +153,22 @@ public class MainMenu extends AppCompatActivity {
     public void openUnNamedList(View view){
         startActivity(new Intent(this, UnNamedScanToList.class));
     }
-    public void test(View view){
-        Log.i("xxxxxxxxxxx", "This is a test");
-    }
 }
+
+// Set up the buttons
+                /*
+                builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        try {
+                            JSONObject selectedList = new JSONObject();
+                            selectedList = list_of_lists_JA.getJSONObject(position);
+                            openChecklistScanPage(selectedList);
+                        }catch (JSONException e){
+                            e.printStackTrace();
+                        }
+                        dialog.dismiss();
+                    }
+                });
+
+                */

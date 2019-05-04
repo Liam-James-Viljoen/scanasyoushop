@@ -73,6 +73,7 @@ public class RequestHandler {
         return sb.toString();
     }
 
+
     public String sendGetRequest(String requestURL) {
         StringBuilder sb = new StringBuilder();
         try {

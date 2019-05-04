@@ -224,15 +224,6 @@ public class ScanToList extends AppCompatActivity {
     }
 
 
-
-
-
-
-
-
-
-
-
     // REFRENCE ------------> https://www.simplifiedcoding.net/android-mysql-tutorial-to-perform-basic-crud-operation/
     //Inner class to perform network requests
     private class PerformNetworkRequest extends AsyncTask<Void, Void, String> {
@@ -261,7 +252,6 @@ public class ScanToList extends AppCompatActivity {
 
                 if (!object.getBoolean("error")) {
                     Toast.makeText(getApplicationContext(), object.getString("message"), Toast.LENGTH_SHORT).show(); //pop-up message
-                    Log.i("Variable Contents:", object.getJSONArray("item").toString());
                     add_item(object.getJSONArray("item"));
 
                 }

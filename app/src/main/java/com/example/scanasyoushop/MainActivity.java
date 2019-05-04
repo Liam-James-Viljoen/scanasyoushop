@@ -65,9 +65,6 @@ public class MainActivity extends AppCompatActivity {
         passwordText = (EditText)findViewById(R.id.passwordText);
         String passwordStr = passwordText.getText().toString().trim();
 
-
-        //Android studio doesn't like me using this for some unknown reason
-
         if (TextUtils.isEmpty(usernameStr) && TextUtils.isEmpty(passwordStr)){
             usernameText.setError("Please enter username");
             usernameText.requestFocus();
@@ -85,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
             passwordText.requestFocus();
             return;
         }
-        if (usernameStr.equals("root") && passwordStr.equals("root")){ //This code is for testing without the database access
+        if (usernameStr.equals("root") && passwordStr.equals("root")){ //This code is for testing without the database access and should be removed for a full release
             SharedPreferences.Editor editor = sharedPref.edit();
             editor.putString("Username", "root");
             editor.apply();
@@ -93,8 +90,8 @@ public class MainActivity extends AppCompatActivity {
         }else{
             readUsers(usernameStr, passwordStr);
         }
-
     }
+
     public void registerPageFunction(View view){
         startActivity(new Intent(this, RegisterPage.class)); //Creates instance of the page
     }
@@ -180,6 +177,7 @@ public class MainActivity extends AppCompatActivity {
             if (!optEncrypted.isPresent()) return false;
             return optEncrypted.get().equals(key);
         }
+
         //Refrence - https://dev.to/awwsmm/how-to-encrypt-a-password-in-java-42dh
         private Optional<String> hashPassword (String password, String salt) {
 

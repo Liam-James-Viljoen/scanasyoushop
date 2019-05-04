@@ -62,22 +62,20 @@ public class RegisterPage extends AppCompatActivity {
         r_phoneText = (EditText)findViewById(R.id.r_phoneText);
         String phoneTextStr = r_phoneText.getText().toString().trim();
 
-        if(checkContentsFunction(usernameStr, passwordStr, passwordReEnterStr, emailTextStr, phoneTextStr, r_usernameText, r_passwordText, r_passwordReEnterText, r_emailText, r_phoneText)){
+        if(checkContentsFunction(usernameStr, passwordStr, passwordReEnterStr, emailTextStr, phoneTextStr,
+                r_usernameText, r_passwordText, r_passwordReEnterText, r_emailText, r_phoneText)){
             return;
         }
 
-
         String salt = generateSalt(200).get(); //Call to generate the string
-
         String protectedPassword = hashPassword(passwordStr, salt).get(); //Generates the hash using the salt
-        Log.i("Variable Contents 1", salt);
-        Log.i("Variable Contents 2", protectedPassword);
-
         registerUser(usernameStr, protectedPassword, emailTextStr, phoneTextStr, salt); //Sends the data to be packaged into a hash map
     }
 
-    public boolean checkContentsFunction(String usernameStr, String passwordStr, String passwordReEnterStr, String emailTextStr, String phoneTextStr,
-                                         EditText r_usernameText, EditText r_passwordText, EditText r_passwordReEnterText, EditText r_emailText, EditText r_phoneText){
+    public boolean checkContentsFunction(String usernameStr, String passwordStr, String passwordReEnterStr,
+                                         String emailTextStr, String phoneTextStr,
+                                         EditText r_usernameText, EditText r_passwordText,
+                                         EditText r_passwordReEnterText, EditText r_emailText, EditText r_phoneText){
         boolean flag = false;
         if (TextUtils.isEmpty(usernameStr)){
             r_usernameText.setError("Please enter username");
@@ -105,13 +103,11 @@ public class RegisterPage extends AppCompatActivity {
             flag = true;
         }
         if (passwordStr.equals(passwordReEnterStr)){
-
         }else {
             r_passwordReEnterText.setError("Password does not match");
             r_passwordReEnterText.requestFocus();
             flag = true;
         }
-
         return flag;
     }
 
