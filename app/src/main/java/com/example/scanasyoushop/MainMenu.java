@@ -7,6 +7,7 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -68,7 +69,8 @@ public class MainMenu extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, final int position, long l) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
 
-                View viewInflated = LayoutInflater.from(view.getContext()).inflate(R.layout.popup_start_checklist, (ViewGroup) findViewById(android.R.id.content), false);
+                View viewInflated = LayoutInflater.from(view.getContext()).inflate(R.layout.popup_start_checklist,
+                        (ViewGroup) findViewById(android.R.id.content), false);
 
                 builder.setView(viewInflated);
 
@@ -105,7 +107,6 @@ public class MainMenu extends AppCompatActivity {
                 builder.show();
             }
         });
-
     }
     public void saveListState(){
         //Intitializes read writer
@@ -125,13 +126,19 @@ public class MainMenu extends AppCompatActivity {
         // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
         builder.setView(viewInflated);
 
+
+
         // Set up the buttons
         builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-                String list_name = input.getText().toString();
-                openScanToListPage(list_name);
+                if (TextUtils.isEmpty(input.getText())){
+                    //Place error message here
+                }else{
+                    dialog.dismiss();
+                    String list_name = input.getText().toString();
+                    openScanToListPage(list_name);
+                }
             }
         });
         builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {

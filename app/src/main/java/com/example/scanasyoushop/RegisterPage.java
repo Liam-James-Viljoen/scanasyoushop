@@ -93,12 +93,12 @@ public class RegisterPage extends AppCompatActivity {
             flag = true;
         }
         if (TextUtils.isEmpty(emailTextStr)){
-            r_emailText.setError("Please enter password");
+            r_emailText.setError("Please enter email");
             r_emailText.requestFocus();
             flag = true;
         }
         if (TextUtils.isEmpty(phoneTextStr)){
-            r_phoneText.setError("Please enter password");
+            r_phoneText.setError("Please enter phone number");
             r_phoneText.requestFocus();
             flag = true;
         }
@@ -118,8 +118,6 @@ public class RegisterPage extends AppCompatActivity {
         params.put("email", email);
         params.put("phonenumber", phonenumber);
         params.put("salt", salt);
-
-        Log.i("Variable Contents 3", params.toString());
 
         RegisterPage.PerformNetworkRequest request = new RegisterPage.PerformNetworkRequest(Api.URL_CREATE_USER, params, CODE_POST_REQUEST);
         request.execute();
